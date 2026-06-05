@@ -217,7 +217,7 @@
       <div class="spinner"></div>
       <p class="loading-txt">사진 불러오는 중...</p>
     </div>
-    <img id="receipt-img" src="" alt="nuvy photo">
+    <img id="receipt-img" src="" alt="nuvy photo" crossorigin="anonymous">
   </div>
 
   <!-- 다운로드 버튼 -->
@@ -250,7 +250,22 @@
 
 </div>
 
-<script>
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+  import { getStorage, ref, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js';
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBRF4E9uaVYSa4ZnLasHv7-fmGejkKTPtM",
+    authDomain: "nuvymini.firebaseapp.com",
+    projectId: "nuvymini",
+    storageBucket: "nuvymini.firebasestorage.app",
+    messagingSenderId: "146917590198",
+    appId: "1:146917590198:web:40c91453c3d454e9541217"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const storage = getStorage(app);
+
   // 별 생성
   const starPositions = [
     [6,8],[15,72],[4,90],[82,6],[92,52],[78,80],[48,4],[62,92],[88,30],[20,40]
@@ -267,11 +282,20 @@
     starsEl.appendChild(s);
   });
 
-  // URL에서 img 파라미터 추출
   let imageURL = null;
+  let storagePath = null;
 
   function getParam(key) {
     return new URLSearchParams(window.location.search).get(key);
+  }
+
+  // Firebase Storage URL에서 경로 추출
+  function extractStoragePath(url) {
+    try {
+      const match = url.match(/firebasestorage\.googleapis\.com\/v0\/b\/[^\/]+\/o\/(.+?)\?/);
+      if (match) return decodeURIComponent(match[1]);
+    } catch(e) {}
+    return null;
   }
 
   function loadPhoto() {
@@ -283,19 +307,18 @@
     }
 
     imageURL = atob(imgParam);
-    const img = document.getElementById('receipt-img');
+    storagePath = extractStoragePath(imageURL);
 
+    const img = document.getElementById('receipt-img');
     img.onload = () => {
       img.classList.add('loaded');
       document.getElementById('photo-loading').classList.add('hidden');
       document.getElementById('dl-btn').disabled = false;
     };
-
     img.onerror = () => {
       document.getElementById('photo-loading').innerHTML =
         '<p class="loading-txt">이미지를 불러올 수 없습니다.</p>';
     };
-
     img.src = imageURL;
   }
 
@@ -304,30 +327,45 @@
     const btn = document.getElementById('dl-btn');
     btn.disabled = true;
     btn.textContent = '저장 중...';
+
     try {
-      const res = await fetch(imageURL);
-      const blob = await res.blob();
+      // Firebase Storage ref로 새 downloadURL 받아서 fetch → blob → 강제 저장
+      let downloadUrl = imageURL;
+      if (storagePath) {
+        const storageRef = ref(storage, storagePath);
+        downloadUrl = await getDownloadURL(storageRef);
+      }
+
+      const response = await fetch(downloadUrl);
+      if (!response.ok) throw new Error('fetch 실패');
+      const blob = await response.blob();
       const blobUrl = URL.createObjectURL(blob);
+
       const a = document.createElement('a');
       a.href = blobUrl;
       a.download = `nuvy-photo-${Date.now()}.jpg`;
+      a.style.display = 'none';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      URL.revokeObjectURL(blobUrl);
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 100);
+
       btn.textContent = '✓ 저장 완료!';
       setTimeout(() => {
         btn.textContent = '📥 사진 저장하기';
         btn.disabled = false;
       }, 2000);
+
     } catch(e) {
-      // 직접 다운로드 안 되면 새 탭으로
+      console.error(e);
+      // 최후 수단: 새 탭
       window.open(imageURL, '_blank');
       btn.textContent = '📥 사진 저장하기';
       btn.disabled = false;
     }
   }
 
+  window.downloadPhoto = downloadPhoto;
   window.addEventListener('load', loadPhoto);
 </script>
 </body>
