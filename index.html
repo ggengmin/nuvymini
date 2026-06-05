@@ -770,8 +770,8 @@ async function uploadAndQR() {
     await fb.uploadBytes(storageRef, blob, { contentType: 'image/jpeg' });
     const url = await fb.getDownloadURL(storageRef);
 
-    // ⬇ 다운로드 페이지 URL — download.html 완성 후 도메인 맞게 수정
-    const qrURL = `https://nuvymini.vercel.app/download.html?img=${encodeURIComponent(url)}`;
+    // Firebase getDownloadURL은 이미 완성된 URL이라 그대로 파라미터로 전달
+    const qrURL = `https://nuvymini.vercel.app/download.html?img=${btoa(url)}`;
 
     document.getElementById('qr-status').textContent = 'QR을 스캔하세요!';
     new QRCode(document.getElementById('qr-box'), {

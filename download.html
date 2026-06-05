@@ -282,7 +282,7 @@
       return;
     }
 
-    imageURL = decodeURIComponent(imgParam);
+    imageURL = atob(imgParam);
     const img = document.getElementById('receipt-img');
 
     img.onload = () => {
