@@ -134,7 +134,7 @@
   }
 
   .main-right {
-    flex: 1;
+    flex: 1.4;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -143,7 +143,7 @@
   /* 라이브 카메라 프리뷰 (메인) */
   .main-camera-wrap {
     position: relative;
-    width: clamp(220px, 35vw, 340px);
+    width: clamp(280px, 48vw, 500px);
     aspect-ratio: 4/3;
     border-radius: 16px;
     overflow: hidden;
@@ -158,20 +158,6 @@
     object-fit: cover;
     transform: scaleX(-1);
     display: block;
-  }
-
-  .camera-label {
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    color: rgba(255,255,255,0.8);
-    background: rgba(0,0,0,0.25);
-    padding: 4px 12px;
-    border-radius: 20px;
   }
 
   /* ════════════════════════════════
@@ -223,7 +209,7 @@
   }
 
   .how-right {
-    flex: 1;
+    flex: 1.4;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -233,7 +219,7 @@
 
   /* 템플릿 예시 이미지 */
   .template-preview {
-    width: clamp(160px, 25vw, 240px);
+    width: clamp(200px, 32vw, 340px);
     border-radius: 8px;
     box-shadow: 0 8px 32px rgba(90,176,224,0.3);
     display: block;
@@ -447,7 +433,6 @@
   <div class="main-right">
     <div class="main-camera-wrap">
       <video id="main-video" autoplay playsinline muted></video>
-      <div class="camera-label">LIVE PREVIEW</div>
     </div>
   </div>
 </div>
@@ -467,7 +452,7 @@
       소품을 활용해 다양하게 찍고<br>
       인스타그램, 카카오톡 배경 등에 활용해보세요 :)
     </p>
-    <button class="btn-main" onclick="startShooting()">시작하기</button>
+    <button class="btn-main" onclick="startShooting()">촬영하기</button>
   </div>
 
   <div class="how-right">
@@ -505,6 +490,7 @@
   <canvas id="result-canvas" style="display:none;"></canvas>
   <img id="result-canvas-display" src="" alt="결과 사진">
   <div class="result-btns">
+    <button class="btn-sub" onclick="goHome()">처음으로</button>
     <button class="btn-sub" onclick="retake()">재촬영</button>
     <button class="btn-main" onclick="uploadAndQR()">다운로드</button>
   </div>
@@ -813,8 +799,14 @@ function resetAll() {
   document.getElementById('qr-status').textContent = '업로드 중...';
 }
 
+function goHome() {
+  resetAll();
+  goTo('screen-main');
+}
+
 // ── 전역 노출 ──
 window.goTo = goTo;
+window.goHome = goHome;
 window.startShooting = startShooting;
 window.retake = retake;
 window.uploadAndQR = uploadAndQR;
