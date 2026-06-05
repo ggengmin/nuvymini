@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>NUVY PHOTO</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Noto+Sans+KR:wght@400;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --sky: #c8e8f8;
+    --sky-light: #e8f5fd;
+    --sky-deep: #a0d0ef;
+    --white: #ffffff;
+    --ink: #1a2a3a;
+    --ink-soft: #4a6070;
+    --blue-btn: #5ab0e0;
+    --blue-btn-hover: #3a90c0;
+  }
+
+  html, body {
+    min-height: 100vh;
+    background: linear-gradient(160deg, var(--sky-light) 0%, var(--sky) 50%, var(--sky-deep) 100%);
+    font-family: 'Noto Sans KR', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* 별 */
+  .stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+  .star {
+    position: absolute;
+    color: #fff;
+    animation: twinkle 2.5s ease-in-out infinite;
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.2); }
+  }
+
+  /* 콘텐츠 wrapper */
+  .container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 420px;
+    padding: 48px 24px 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+  }
+
+  /* 제목 */
+  .page-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 32px;
+    color: var(--white);
+    letter-spacing: 0.1em;
+    text-align: center;
+    text-shadow: 0 2px 16px rgba(90,176,224,0.5);
+  }
+
+  /* 사진 */
+  .photo-wrap {
+    width: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 12px 48px rgba(90,176,224,0.3);
+    background: #b0c8d8;
+    position: relative;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #receipt-img {
+    width: 100%;
+    display: block;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  #receipt-img.loaded { opacity: 1; }
+
+  /* 로딩 스피너 */
+  .photo-loading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    transition: opacity 0.4s;
+  }
+  .photo-loading.hidden { opacity: 0; pointer-events: none; }
+
+  .spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-txt {
+    font-size: 12px;
+    color: rgba(255,255,255,0.8);
+    letter-spacing: 0.1em;
+  }
+
+  /* 한줄 설명 */
+  .desc {
+    font-size: 15px;
+    color: var(--ink-soft);
+    text-align: center;
+    line-height: 1.8;
+    letter-spacing: 0.03em;
+  }
+
+  /* 다운로드 버튼 */
+  .btn-download {
+    width: 100%;
+    padding: 16px;
+    background: var(--blue-btn);
+    color: var(--white);
+    border: none;
+    border-radius: 50px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(90,176,224,0.35);
+    transition: all 0.15s;
+  }
+  .btn-download:hover { background: var(--blue-btn-hover); transform: translateY(-1px); }
+  .btn-download:active { transform: translateY(1px); }
+  .btn-download:disabled { opacity: 0.4; cursor: default; transform: none; }
+
+  /* 구분선 */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: rgba(255,255,255,0.4);
+  }
+
+  /* 인스타그램 */
+  .insta-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .insta-label {
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing: 0.15em;
+    font-weight: 700;
+  }
+
+  .insta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--ink);
+    font-size: 17px;
+    font-weight: 700;
+    font-family: 'Fredoka One', cursive;
+    letter-spacing: 0.05em;
+    transition: color 0.15s;
+  }
+  .insta-link:hover { color: #c13584; }
+
+  .insta-icon {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+  }
+
+  /* made by */
+  .made-by {
+    font-size: 11px;
+    color: rgba(74,96,112,0.6);
+    letter-spacing: 0.18em;
+    font-weight: 700;
+  }
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<div class="container">
+
+  <!-- 제목 -->
+  <h1 class="page-title">✦ 오늘의 한 컷 ✦</h1>
+
+  <!-- 사진 -->
+  <div class="photo-wrap">
+    <div class="photo-loading" id="photo-loading">
+      <div class="spinner"></div>
+      <p class="loading-txt">사진 불러오는 중...</p>
+    </div>
+    <img id="receipt-img" src="" alt="nuvy photo">
+  </div>
+
+  <!-- 다운로드 버튼 -->
+  <button class="btn-download" id="dl-btn" disabled onclick="downloadPhoto()">
+    📥 사진 저장하기
+  </button>
+
+  <div class="divider"></div>
+
+  <!-- 한줄 설명 -->
+  <p class="desc">
+    누비포토 썸머팝업에서 찍은 나의 한 컷 🌊<br>
+    소중한 순간을 저장하고 공유해보세요!
+  </p>
+
+  <!-- 인스타그램 -->
+  <div class="insta-wrap">
+    <p class="insta-label">MADE BY</p>
+    <a class="insta-link" href="https://www.instagram.com/nuvy.photo" target="_blank">
+      <svg class="insta-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="2"/>
+        <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
+        <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/>
+      </svg>
+      @nuvy.photo
+    </a>
+  </div>
+
+  <p class="made-by">NUVY PHOTO × SUMMER POPUP</p>
+
+</div>
+
+<script>
+  // 별 생성
+  const starPositions = [
+    [6,8],[15,72],[4,90],[82,6],[92,52],[78,80],[48,4],[62,92],[88,30],[20,40]
+  ];
+  const starsEl = document.getElementById('stars');
+  starPositions.forEach(([left, top], i) => {
+    const s = document.createElement('span');
+    s.className = 'star';
+    s.textContent = '✦';
+    s.style.left = left + '%';
+    s.style.top = top + '%';
+    s.style.animationDelay = (i * 0.3) + 's';
+    s.style.fontSize = (12 + (i % 3) * 6) + 'px';
+    starsEl.appendChild(s);
+  });
+
+  // URL에서 img 파라미터 추출
+  let imageURL = null;
+
+  function getParam(key) {
+    return new URLSearchParams(window.location.search).get(key);
+  }
+
+  function loadPhoto() {
+    const imgParam = getParam('img');
+    if (!imgParam) {
+      document.getElementById('photo-loading').innerHTML =
+        '<p class="loading-txt">이미지 정보가 없습니다.</p>';
+      return;
+    }
+
+    imageURL = decodeURIComponent(imgParam);
+    const img = document.getElementById('receipt-img');
+
+    img.onload = () => {
+      img.classList.add('loaded');
+      document.getElementById('photo-loading').classList.add('hidden');
+      document.getElementById('dl-btn').disabled = false;
+    };
+
+    img.onerror = () => {
+      document.getElementById('photo-loading').innerHTML =
+        '<p class="loading-txt">이미지를 불러올 수 없습니다.</p>';
+    };
+
+    img.src = imageURL;
+  }
+
+  async function downloadPhoto() {
+    if (!imageURL) return;
+    const btn = document.getElementById('dl-btn');
+    btn.disabled = true;
+    btn.textContent = '저장 중...';
+    try {
+      const res = await fetch(imageURL);
+      const blob = await res.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = `nuvy-photo-${Date.now()}.jpg`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(blobUrl);
+      btn.textContent = '✓ 저장 완료!';
+      setTimeout(() => {
+        btn.textContent = '📥 사진 저장하기';
+        btn.disabled = false;
+      }, 2000);
+    } catch(e) {
+      // 직접 다운로드 안 되면 새 탭으로
+      window.open(imageURL, '_blank');
+      btn.textContent = '📥 사진 저장하기';
+      btn.disabled = false;
+    }
+  }
+
+  window.addEventListener('load', loadPhoto);
+</script>
+</body>
+</html>
