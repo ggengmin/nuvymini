@@ -30,7 +30,6 @@
     align-items: center;
   }
 
-  /* 별 */
   .stars {
     position: fixed;
     inset: 0;
@@ -48,7 +47,6 @@
     50% { opacity: 1; transform: scale(1.2); }
   }
 
-  /* 콘텐츠 wrapper */
   .container {
     position: relative;
     z-index: 1;
@@ -58,10 +56,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 28px;
+    gap: 24px;
   }
 
-  /* 제목 */
   .page-title {
     font-family: 'Fredoka One', cursive;
     font-size: 32px;
@@ -71,7 +68,6 @@
     text-shadow: 0 2px 16px rgba(90,176,224,0.5);
   }
 
-  /* 사진 */
   .photo-wrap {
     width: 100%;
     border-radius: 16px;
@@ -93,7 +89,6 @@
   }
   #receipt-img.loaded { opacity: 1; }
 
-  /* 로딩 스피너 */
   .photo-loading {
     position: absolute;
     inset: 0;
@@ -122,7 +117,36 @@
     letter-spacing: 0.1em;
   }
 
-  /* 한줄 설명 */
+  /* 저장 안내 박스 */
+  .save-guide {
+    width: 100%;
+    background: rgba(255,255,255,0.55);
+    border-radius: 16px;
+    padding: 18px 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    box-shadow: 0 2px 12px rgba(90,176,224,0.12);
+  }
+  .save-guide-main {
+    font-family: 'Fredoka One', cursive;
+    font-size: 19px;
+    color: var(--ink);
+    letter-spacing: 0.03em;
+  }
+  .save-guide-sub {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: rgba(255,255,255,0.4);
+  }
+
   .desc {
     font-size: 15px;
     color: var(--ink-soft);
@@ -131,48 +155,18 @@
     letter-spacing: 0.03em;
   }
 
-  /* 다운로드 버튼 */
-  .btn-download {
-    width: 100%;
-    padding: 16px;
-    background: var(--blue-btn);
-    color: var(--white);
-    border: none;
-    border-radius: 50px;
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    cursor: pointer;
-    box-shadow: 0 4px 20px rgba(90,176,224,0.35);
-    transition: all 0.15s;
-  }
-  .btn-download:hover { background: var(--blue-btn-hover); transform: translateY(-1px); }
-  .btn-download:active { transform: translateY(1px); }
-  .btn-download:disabled { opacity: 0.4; cursor: default; transform: none; }
-
-  /* 구분선 */
-  .divider {
-    width: 100%;
-    height: 1px;
-    background: rgba(255,255,255,0.4);
-  }
-
-  /* 인스타그램 */
   .insta-wrap {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 8px;
   }
-
   .insta-label {
     font-size: 11px;
     color: var(--ink-soft);
     letter-spacing: 0.15em;
     font-weight: 700;
   }
-
   .insta-link {
     display: inline-flex;
     align-items: center;
@@ -186,14 +180,8 @@
     transition: color 0.15s;
   }
   .insta-link:hover { color: #c13584; }
+  .insta-icon { width: 22px; height: 22px; flex-shrink: 0; }
 
-  .insta-icon {
-    width: 22px;
-    height: 22px;
-    flex-shrink: 0;
-  }
-
-  /* made by */
   .made-by {
     font-size: 11px;
     color: rgba(74,96,112,0.6);
@@ -208,7 +196,6 @@
 
 <div class="container">
 
-  <!-- 제목 -->
   <h1 class="page-title">✦ 오늘의 한 컷 ✦</h1>
 
   <!-- 사진 -->
@@ -220,20 +207,19 @@
     <img id="receipt-img" src="" alt="nuvy photo">
   </div>
 
-  <!-- 다운로드 버튼 -->
-  <button class="btn-download" id="dl-btn" disabled onclick="downloadPhoto()">
-    📥 사진 저장하기
-  </button>
+  <!-- 저장 안내 -->
+  <div class="save-guide">
+    <p class="save-guide-main">사진을 꾹 눌러서 저장하세요 👆</p>
+    <p class="save-guide-sub">사진 위에서 길게 누르면<br>저장 옵션이 나타나요!</p>
+  </div>
 
   <div class="divider"></div>
 
-  <!-- 한줄 설명 -->
   <p class="desc">
     누비포토 썸머팝업에서 찍은 나의 한 컷 🌊<br>
     소중한 순간을 저장하고 공유해보세요!
   </p>
 
-  <!-- 인스타그램 -->
   <div class="insta-wrap">
     <p class="insta-label">MADE BY</p>
     <a class="insta-link" href="https://www.instagram.com/nuvy.photo" target="_blank">
@@ -250,23 +236,7 @@
 
 </div>
 
-<script type="module">
-  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-  import { getStorage, ref, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js';
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyBRF4E9uaVYSa4ZnLasHv7-fmGejkKTPtM",
-    authDomain: "nuvymini.firebaseapp.com",
-    projectId: "nuvymini",
-    storageBucket: "nuvymini.firebasestorage.app",
-    messagingSenderId: "146917590198",
-    appId: "1:146917590198:web:40c91453c3d454e9541217"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const storage = getStorage(app);
-
-  // 별 생성
+<script>
   const starPositions = [
     [6,8],[15,72],[4,90],[82,6],[92,52],[78,80],[48,4],[62,92],[88,30],[20,40]
   ];
@@ -283,19 +253,9 @@
   });
 
   let imageURL = null;
-  let storagePath = null;
 
   function getParam(key) {
     return new URLSearchParams(window.location.search).get(key);
-  }
-
-  // Firebase Storage URL에서 경로 추출
-  function extractStoragePath(url) {
-    try {
-      const match = url.match(/firebasestorage\.googleapis\.com\/v0\/b\/[^\/]+\/o\/(.+?)\?/);
-      if (match) return decodeURIComponent(match[1]);
-    } catch(e) {}
-    return null;
   }
 
   function loadPhoto() {
@@ -307,83 +267,19 @@
     }
 
     imageURL = atob(imgParam);
-    storagePath = extractStoragePath(imageURL);
-
     const img = document.getElementById('receipt-img');
 
-    // Firebase SDK로 새 URL 받아서 로드 (토큰 갱신 + CORS 우회)
-    async function fetchAndLoad() {
-      try {
-        let loadUrl = imageURL;
-        if (storagePath) {
-          const storageRef = ref(storage, storagePath);
-          loadUrl = await getDownloadURL(storageRef);
-          imageURL = loadUrl; // 다운로드 때도 동일한 URL 사용
-        }
-        img.onload = () => {
-          img.classList.add('loaded');
-          document.getElementById('photo-loading').classList.add('hidden');
-          document.getElementById('dl-btn').disabled = false;
-        };
-        img.onerror = () => {
-          document.getElementById('photo-loading').innerHTML =
-            '<p class="loading-txt">이미지를 불러올 수 없습니다.</p>';
-        };
-        img.src = loadUrl;
-      } catch(e) {
-        console.error(e);
-        document.getElementById('photo-loading').innerHTML =
-          '<p class="loading-txt">이미지를 불러올 수 없습니다.</p>';
-      }
-    }
-
-    fetchAndLoad();
+    img.onload = () => {
+      img.classList.add('loaded');
+      document.getElementById('photo-loading').classList.add('hidden');
+    };
+    img.onerror = () => {
+      document.getElementById('photo-loading').innerHTML =
+        '<p class="loading-txt">이미지를 불러올 수 없습니다.</p>';
+    };
+    img.src = imageURL;
   }
 
-  async function downloadPhoto() {
-    if (!imageURL) return;
-    const btn = document.getElementById('dl-btn');
-    btn.disabled = true;
-    btn.textContent = '저장 중...';
-
-    try {
-      // Firebase Storage ref로 새 downloadURL 받아서 fetch → blob → 강제 저장
-      let downloadUrl = imageURL;
-      if (storagePath) {
-        const storageRef = ref(storage, storagePath);
-        downloadUrl = await getDownloadURL(storageRef);
-      }
-
-      const response = await fetch(downloadUrl);
-      if (!response.ok) throw new Error('fetch 실패');
-      const blob = await response.blob();
-      const blobUrl = URL.createObjectURL(blob);
-
-      const a = document.createElement('a');
-      a.href = blobUrl;
-      a.download = `nuvy-photo-${Date.now()}.jpg`;
-      a.style.display = 'none';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      setTimeout(() => URL.revokeObjectURL(blobUrl), 100);
-
-      btn.textContent = '✓ 저장 완료!';
-      setTimeout(() => {
-        btn.textContent = '📥 사진 저장하기';
-        btn.disabled = false;
-      }, 2000);
-
-    } catch(e) {
-      console.error(e);
-      // 최후 수단: 새 탭
-      window.open(imageURL, '_blank');
-      btn.textContent = '📥 사진 저장하기';
-      btn.disabled = false;
-    }
-  }
-
-  window.downloadPhoto = downloadPhoto;
   window.addEventListener('load', loadPhoto);
 </script>
 </body>
