@@ -217,7 +217,7 @@
       <div class="spinner"></div>
       <p class="loading-txt">사진 불러오는 중...</p>
     </div>
-    <img id="receipt-img" src="" alt="nuvy photo" crossorigin="anonymous">
+    <img id="receipt-img" src="" alt="nuvy photo">
   </div>
 
   <!-- 다운로드 버튼 -->
@@ -310,16 +310,34 @@
     storagePath = extractStoragePath(imageURL);
 
     const img = document.getElementById('receipt-img');
-    img.onload = () => {
-      img.classList.add('loaded');
-      document.getElementById('photo-loading').classList.add('hidden');
-      document.getElementById('dl-btn').disabled = false;
-    };
-    img.onerror = () => {
-      document.getElementById('photo-loading').innerHTML =
-        '<p class="loading-txt">이미지를 불러올 수 없습니다.</p>';
-    };
-    img.src = imageURL;
+
+    // Firebase SDK로 새 URL 받아서 로드 (토큰 갱신 + CORS 우회)
+    async function fetchAndLoad() {
+      try {
+        let loadUrl = imageURL;
+        if (storagePath) {
+          const storageRef = ref(storage, storagePath);
+          loadUrl = await getDownloadURL(storageRef);
+          imageURL = loadUrl; // 다운로드 때도 동일한 URL 사용
+        }
+        img.onload = () => {
+          img.classList.add('loaded');
+          document.getElementById('photo-loading').classList.add('hidden');
+          document.getElementById('dl-btn').disabled = false;
+        };
+        img.onerror = () => {
+          document.getElementById('photo-loading').innerHTML =
+            '<p class="loading-txt">이미지를 불러올 수 없습니다.</p>';
+        };
+        img.src = loadUrl;
+      } catch(e) {
+        console.error(e);
+        document.getElementById('photo-loading').innerHTML =
+          '<p class="loading-txt">이미지를 불러올 수 없습니다.</p>';
+      }
+    }
+
+    fetchAndLoad();
   }
 
   async function downloadPhoto() {
