@@ -5,57 +5,64 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>NUVY PHOTO</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap');
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   html, body {
     min-height: 100vh;
-    background: #F5EAD8;
+    background: #F2EFE9; /* 프리미엄 크림 베이지 톤 */
     font-family: 'Noto Sans KR', sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
+    color: #1C352D; /* 깊이감 있는 딥 홀리그린 */
   }
 
   .container {
     width: 100%;
     max-width: 420px;
-    padding: 52px 24px 60px;
+    padding: 48px 24px 48px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 22px;
+    gap: 24px;
   }
 
-  /* 상단 타이틀 */
-  .page-title {
-    font-family: 'Noto Serif KR', serif;
-    font-size: 22px;
-    font-weight: 700;
-    color: #3A2A1A;
-    letter-spacing: 0.06em;
+  /* 브랜드 헤더 */
+  .brand-header {
     text-align: center;
+    margin-bottom: 4px;
+  }
+
+  .brand-logo {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #1C352D;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
 
   .page-date {
-    font-size: 12px;
-    color: #9A7A5A;
-    letter-spacing: 0.2em;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    color: #8A9A86;
+    letter-spacing: 0.25em;
     text-align: center;
     font-weight: 500;
-    margin-top: -10px;
+    margin-top: 6px;
   }
 
-  /* 사진 영역 */
+  /* 사진 프레임 영역 */
   .photo-wrap {
     width: 100%;
-    border-radius: 8px;
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 8px 32px rgba(90,60,20,0.15);
-    background: #D4C4A8;
+    box-shadow: 0 12px 40px rgba(28, 53, 45, 0.08);
+    background: #E5E1D8;
     position: relative;
-    min-height: 200px;
+    min-height: 300px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -65,134 +72,162 @@
     width: 100%;
     display: block;
     opacity: 0;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    -webkit-touch-callout: default; /* 모바일에서 꾹 누르기 활성화 */
   }
   #receipt-img.loaded { opacity: 1; }
 
+  /* 로딩 스피너 */
   .photo-loading {
     position: absolute; inset: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 16px;
+    background: #E5E1D8;
     transition: opacity 0.4s;
   }
   .photo-loading.hidden { opacity: 0; pointer-events: none; }
 
   .spinner {
-    width: 32px; height: 32px;
-    border: 2.5px solid rgba(90,60,20,0.2);
-    border-top-color: #9A7A5A;
+    width: 28px; height: 28px;
+    border: 2px solid rgba(28, 53, 45, 0.1);
+    border-top-color: #1C352D;
     border-radius: 50%;
-    animation: spin 0.8s linear infinite;
+    animation: spin 0.7s cubic-bezier(0.5, 0.1, 0.1, 0.9) infinite;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
   .loading-txt {
-    font-size: 11px;
-    color: #9A7A5A;
-    letter-spacing: 0.12em;
+    font-size: 12px;
+    color: #1C352D;
+    letter-spacing: 0.08em;
+    font-weight: 500;
   }
 
-  /* 구분선 */
-  .divider {
-    width: 100%;
-    height: 1px;
-    background: rgba(90,60,20,0.12);
-  }
-
-  /* 저장 안내 */
+  /* 저장 안내 컴포넌트 */
   .save-guide {
     width: 100%;
-    background: rgba(255,255,255,0.6);
-    border: 1px solid rgba(90,60,20,0.1);
-    border-radius: 10px;
-    padding: 16px 20px;
+    background: #FFFFFF;
+    border-radius: 14px;
+    padding: 18px 20px;
     text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .finger-icon {
-    font-size: 28px;
-    animation: press 1.6s ease-in-out infinite;
-    display: inline-block;
-    transform-origin: bottom center;
-  }
-  @keyframes press {
-    0%, 100% { transform: translateY(0) scale(1); }
-    40%       { transform: translateY(4px) scale(0.9); }
-    60%       { transform: translateY(4px) scale(0.9); }
-    80%       { transform: translateY(0) scale(1); }
-  }
-
-  .save-guide-main {
-    font-family: 'Noto Serif KR', serif;
-    font-size: 16px;
-    font-weight: 700;
-    color: #3A2A1A;
-    letter-spacing: 0.02em;
-  }
-
-  .save-guide-sub {
-    font-size: 12px;
-    color: #7A6050;
-    line-height: 1.7;
-    letter-spacing: 0.02em;
-  }
-
-  /* 설명 텍스트 */
-  .desc {
-    font-size: 13px;
-    color: #7A6050;
-    text-align: center;
-    line-height: 1.9;
-    letter-spacing: 0.03em;
-  }
-
-  /* 인스타 영역 */
-  .insta-wrap {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 6px;
+    box-shadow: 0 4px 20px rgba(28, 53, 45, 0.03);
   }
 
-  .insta-label {
-    font-size: 10px;
-    color: #9A7A5A;
-    letter-spacing: 0.2em;
+  .finger-icon {
+    font-size: 24px;
+    animation: press 1.4s ease-in-out infinite;
+    display: inline-block;
+    margin-bottom: 2px;
+  }
+  @keyframes press {
+    0%, 100% { transform: scale(1) translateY(0); }
+    50%       { transform: scale(0.9) translateY(4px); }
+  }
+
+  .save-guide-main {
+    font-size: 15px;
     font-weight: 700;
+    color: #1C352D;
+    letter-spacing: -0.01em;
   }
 
-  .insta-link {
-    display: inline-flex;
+  .save-guide-sub {
+    font-size: 12px;
+    color: #6B7C75;
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+  }
+
+  /* 감성 슬로건 */
+  .brand-slogan {
+    font-size: 13px;
+    color: #6B7C75;
+    text-align: center;
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+    margin: 4px 0;
+  }
+
+  /* 인스타그램 딥링크 카드 버튼 */
+  .insta-card {
+    width: 100%;
+    background: #1C352D; /* 팝업 치트키 컬러 적용 */
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
     align-items: center;
-    gap: 7px;
+    justify-content: space-between;
     text-decoration: none;
-    color: #3A2A1A;
-    font-size: 16px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    font-family: 'Noto Serif KR', serif;
-    transition: color 0.15s;
-    border-bottom: 1.5px solid rgba(90,60,20,0.25);
-    padding-bottom: 2px;
+    transition: transform 0.2s ease, background 0.2s ease;
   }
-  .insta-link:hover { color: #C4622A; border-color: #C4622A; }
+  .insta-card:active {
+    transform: scale(0.98);
+    background: #152822;
+  }
 
-  .insta-icon { width: 18px; height: 18px; flex-shrink: 0; }
+  .insta-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
 
-  /* 브랜드 */
-  .made-by {
+  .insta-icon-wrap {
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #F2EFE9;
+  }
+
+  .insta-icon { width: 20px; height: 20px; }
+
+  .insta-text-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .insta-tag-txt {
+    font-size: 11px;
+    color: #8A9A86;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+
+  .insta-handle {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: #F2EFE9;
+    letter-spacing: 0.02em;
+  }
+
+  .arrow-icon {
+    color: #8A9A86;
+    width: 18px;
+    height: 18px;
+  }
+
+  /* 푸터 크레딧 */
+  .footer-credit {
+    font-family: 'Montserrat', sans-serif;
     font-size: 10px;
-    color: rgba(90,60,20,0.45);
-    letter-spacing: 0.22em;
+    color: rgba(28, 53, 45, 0.4);
+    letter-spacing: 0.18em;
     font-weight: 700;
     text-align: center;
+    margin-top: 8px;
   }
 </style>
 </head>
@@ -200,54 +235,67 @@
 
 <div class="container">
 
-  <h1 class="page-title">오늘의 한 컷</h1>
-  <p class="page-date" id="today-date">—</p>
+  <!-- 브랜드 로고 및 날짜 -->
+  <header class="brand-header">
+    <h1 class="brand-logo">NUBY PHOTO</h1>
+    <p class="page-date" id="today-date">—</p>
+  </header>
 
-  <div class="photo-wrap">
+  <!-- 이미지 프레임 존 -->
+  <main class="photo-wrap">
     <div class="photo-loading" id="photo-loading">
       <div class="spinner"></div>
-      <p class="loading-txt">불러오는 중</p>
+      <p class="loading-txt">추억을 불러오는 중</p>
     </div>
-    <img id="receipt-img" src="" alt="nuvy photo">
-  </div>
+    <img id="receipt-img" src="" alt="NUBY PHOTO">
+  </main>
 
-  <div class="save-guide">
+  <!-- 저장 가이드 (아이폰/갤럭시 통합 직관성 가이드) -->
+  <section class="save-guide">
     <span class="finger-icon">👆</span>
-    <p class="save-guide-main">사진을 꾹 눌러서 저장하세요</p>
-    <p class="save-guide-sub">사진 위에서 길게 누르면<br>저장 옵션이 나타나요</p>
-  </div>
+    <p class="save-guide-main">사진을 꾹 누르면 바로 저장돼요</p>
+    <p class="save-guide-sub">아이폰은 '사진 앱에 저장', 갤럭시는 '이미지 다운로드'</p>
+  </section>
 
-  <div class="divider"></div>
-
-  <p class="desc">
-    누비포토 썸머팝업에서 찍은 나의 한 컷 🌊<br>
-    소중한 순간을 저장하고 공유해보세요!
+  <!-- 감성 카피 문구 -->
+  <p class="brand-slogan">
+    누비포토 썸머팝업과 함께한 오늘 🌊<br>
+    소중한 여름의 순간을 간직하고 공유해 보세요.
   </p>
 
-  <div class="insta-wrap">
-    <p class="insta-label">MADE BY</p>
-    <a class="insta-link" href="https://www.instagram.com/nuvy.photo" target="_blank">
-      <svg class="insta-icon" viewBox="0 0 24 24" fill="none">
-        <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="2"/>
-        <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
-        <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/>
-      </svg>
-      @nuvy.photo
-    </a>
-  </div>
+  <!-- 인스타그램 링크 카드 버튼 -->
+  <a class="insta-card" href="https://www.instagram.com/nuvy.photo" target="_blank">
+    <div class="insta-info">
+      <div class="insta-icon-wrap">
+        <svg class="insta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+        </svg>
+      </div>
+      <div class="insta-text-group">
+        <span class="insta-tag-txt">인스타 스토리에 태그하기</span>
+        <span class="insta-handle">@nuvy.photo</span>
+      </div>
+    </div>
+    <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </a>
 
-  <p class="made-by">NUVY PHOTO × SUMMER POPUP</p>
+  <!-- 하단 크레딧 -->
+  <footer class="footer-credit">NUVY PHOTO × SUMMER POPUP</footer>
 
 </div>
 
 <script>
-  // 날짜 자동
+  // 오늘 날짜 세팅 (Montserrat 폰트 매치를 위해 하이픈 기호 적용)
   (function() {
     const now = new Date();
     const y = now.getFullYear();
     const m = String(now.getMonth()+1).padStart(2,'0');
     const d = String(now.getDate()).padStart(2,'0');
-    document.getElementById('today-date').textContent = `${y} · ${m} · ${d}`;
+    document.getElementById('today-date').textContent = `${y} - ${m} - ${d}`;
   })();
 
   let imageURL = null;
