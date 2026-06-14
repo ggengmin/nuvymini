@@ -112,7 +112,21 @@
     text-align: center;
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .finger-icon {
+    font-size: 28px;
+    animation: press 1.6s ease-in-out infinite;
+    display: inline-block;
+    transform-origin: bottom center;
+  }
+  @keyframes press {
+    0%, 100% { transform: translateY(0) scale(1); }
+    40%       { transform: translateY(4px) scale(0.9); }
+    60%       { transform: translateY(4px) scale(0.9); }
+    80%       { transform: translateY(0) scale(1); }
   }
 
   .save-guide-main {
@@ -198,7 +212,8 @@
   </div>
 
   <div class="save-guide">
-    <p class="save-guide-main">사진을 꾹 눌러서 저장하세요 👆</p>
+    <span class="finger-icon">👆</span>
+    <p class="save-guide-main">사진을 꾹 눌러서 저장하세요</p>
     <p class="save-guide-sub">사진 위에서 길게 누르면<br>저장 옵션이 나타나요</p>
   </div>
 

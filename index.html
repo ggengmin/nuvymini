@@ -140,7 +140,7 @@
 
   #countdown-overlay {
     position: absolute;
-    top: 80px;
+    top: 70px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 8;
@@ -354,7 +354,7 @@ let camStream = null;
 async function startCamera() {
   try {
     camStream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } },
+      video: { facingMode: 'user', width: { ideal: 1920 }, height: { ideal: 1080 } },
       audio: false
     });
     document.getElementById('main-video').srcObject = camStream;
@@ -456,7 +456,7 @@ function captureFrame() {
   ctx.scale(-1, 1);
   ctx.drawImage(video, sx, sy, sw, sh, 0, 0, tmpCanvas.width, tmpCanvas.height);
 
-  capturedFrames.push(tmpCanvas.toDataURL('image/jpeg', 0.95));
+  capturedFrames.push(tmpCanvas.toDataURL('image/png')); // PNG로 무손실 저장
   shootIndex++;
 
   if (shootIndex < 2) {
