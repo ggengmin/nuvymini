@@ -3,77 +3,57 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
 <title>NUVY PHOTO</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Noto+Sans+KR:wght@400;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap');
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  :root {
-    --sky: #c8e8f8;
-    --sky-light: #e8f5fd;
-    --sky-deep: #a0d0ef;
-    --white: #ffffff;
-    --ink: #1a2a3a;
-    --ink-soft: #4a6070;
-    --blue-btn: #5ab0e0;
-    --blue-btn-hover: #3a90c0;
-  }
-
   html, body {
     min-height: 100vh;
-    background: linear-gradient(160deg, var(--sky-light) 0%, var(--sky) 50%, var(--sky-deep) 100%);
+    background: #F5EAD8;
     font-family: 'Noto Sans KR', sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
-  .stars {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-    z-index: 0;
-  }
-  .star {
-    position: absolute;
-    color: #fff;
-    animation: twinkle 2.5s ease-in-out infinite;
-  }
-  @keyframes twinkle {
-    0%, 100% { opacity: 0.3; transform: scale(0.8); }
-    50% { opacity: 1; transform: scale(1.2); }
-  }
-
   .container {
-    position: relative;
-    z-index: 1;
     width: 100%;
     max-width: 420px;
-    padding: 48px 24px 60px;
+    padding: 52px 24px 60px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 24px;
+    gap: 22px;
   }
 
+  /* 상단 타이틀 */
   .page-title {
-    font-family: 'Fredoka One', cursive;
-    font-size: 32px;
-    color: var(--white);
-    letter-spacing: 0.1em;
+    font-family: 'Noto Serif KR', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #3A2A1A;
+    letter-spacing: 0.06em;
     text-align: center;
-    text-shadow: 0 2px 16px rgba(90,176,224,0.5);
   }
 
+  .page-date {
+    font-size: 12px;
+    color: #9A7A5A;
+    letter-spacing: 0.2em;
+    text-align: center;
+    font-weight: 500;
+    margin-top: -10px;
+  }
+
+  /* 사진 영역 */
   .photo-wrap {
     width: 100%;
-    border-radius: 16px;
+    border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 12px 48px rgba(90,176,224,0.3);
-    background: #b0c8d8;
+    box-shadow: 0 8px 32px rgba(90,60,20,0.15);
+    background: #D4C4A8;
     position: relative;
     min-height: 200px;
     display: flex;
@@ -90,127 +70,136 @@
   #receipt-img.loaded { opacity: 1; }
 
   .photo-loading {
-    position: absolute;
-    inset: 0;
+    position: absolute; inset: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 14px;
+    gap: 12px;
     transition: opacity 0.4s;
   }
   .photo-loading.hidden { opacity: 0; pointer-events: none; }
 
   .spinner {
-    width: 36px;
-    height: 36px;
-    border: 3px solid rgba(255,255,255,0.3);
-    border-top-color: white;
+    width: 32px; height: 32px;
+    border: 2.5px solid rgba(90,60,20,0.2);
+    border-top-color: #9A7A5A;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
   .loading-txt {
-    font-size: 12px;
-    color: rgba(255,255,255,0.8);
-    letter-spacing: 0.1em;
+    font-size: 11px;
+    color: #9A7A5A;
+    letter-spacing: 0.12em;
   }
 
-  /* 저장 안내 박스 */
-  .save-guide {
-    width: 100%;
-    background: rgba(255,255,255,0.55);
-    border-radius: 16px;
-    padding: 18px 20px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    box-shadow: 0 2px 12px rgba(90,176,224,0.12);
-  }
-  .save-guide-main {
-    font-family: 'Fredoka One', cursive;
-    font-size: 19px;
-    color: var(--ink);
-    letter-spacing: 0.03em;
-  }
-  .save-guide-sub {
-    font-size: 13px;
-    color: var(--ink-soft);
-    line-height: 1.7;
-  }
-
+  /* 구분선 */
   .divider {
     width: 100%;
     height: 1px;
-    background: rgba(255,255,255,0.4);
+    background: rgba(90,60,20,0.12);
   }
 
-  .desc {
-    font-size: 15px;
-    color: var(--ink-soft);
+  /* 저장 안내 */
+  .save-guide {
+    width: 100%;
+    background: rgba(255,255,255,0.6);
+    border: 1px solid rgba(90,60,20,0.1);
+    border-radius: 10px;
+    padding: 16px 20px;
     text-align: center;
-    line-height: 1.8;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .save-guide-main {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #3A2A1A;
+    letter-spacing: 0.02em;
+  }
+
+  .save-guide-sub {
+    font-size: 12px;
+    color: #7A6050;
+    line-height: 1.7;
+    letter-spacing: 0.02em;
+  }
+
+  /* 설명 텍스트 */
+  .desc {
+    font-size: 13px;
+    color: #7A6050;
+    text-align: center;
+    line-height: 1.9;
     letter-spacing: 0.03em;
   }
 
+  /* 인스타 영역 */
   .insta-wrap {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
   }
+
   .insta-label {
-    font-size: 11px;
-    color: var(--ink-soft);
-    letter-spacing: 0.15em;
+    font-size: 10px;
+    color: #9A7A5A;
+    letter-spacing: 0.2em;
     font-weight: 700;
   }
+
   .insta-link {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 7px;
     text-decoration: none;
-    color: var(--ink);
-    font-size: 17px;
+    color: #3A2A1A;
+    font-size: 16px;
     font-weight: 700;
-    font-family: 'Fredoka One', cursive;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.04em;
+    font-family: 'Noto Serif KR', serif;
     transition: color 0.15s;
+    border-bottom: 1.5px solid rgba(90,60,20,0.25);
+    padding-bottom: 2px;
   }
-  .insta-link:hover { color: #c13584; }
-  .insta-icon { width: 22px; height: 22px; flex-shrink: 0; }
+  .insta-link:hover { color: #C4622A; border-color: #C4622A; }
 
+  .insta-icon { width: 18px; height: 18px; flex-shrink: 0; }
+
+  /* 브랜드 */
   .made-by {
-    font-size: 11px;
-    color: rgba(74,96,112,0.6);
-    letter-spacing: 0.18em;
+    font-size: 10px;
+    color: rgba(90,60,20,0.45);
+    letter-spacing: 0.22em;
     font-weight: 700;
+    text-align: center;
   }
 </style>
 </head>
 <body>
 
-<div class="stars" id="stars"></div>
-
 <div class="container">
 
-  <h1 class="page-title">✦ 오늘의 한 컷 ✦</h1>
+  <h1 class="page-title">오늘의 한 컷</h1>
+  <p class="page-date" id="today-date">—</p>
 
-  <!-- 사진 -->
   <div class="photo-wrap">
     <div class="photo-loading" id="photo-loading">
       <div class="spinner"></div>
-      <p class="loading-txt">사진 불러오는 중...</p>
+      <p class="loading-txt">불러오는 중</p>
     </div>
     <img id="receipt-img" src="" alt="nuvy photo">
   </div>
 
-  <!-- 저장 안내 -->
   <div class="save-guide">
     <p class="save-guide-main">사진을 꾹 눌러서 저장하세요 👆</p>
-    <p class="save-guide-sub">사진 위에서 길게 누르면<br>저장 옵션이 나타나요!</p>
+    <p class="save-guide-sub">사진 위에서 길게 누르면<br>저장 옵션이 나타나요</p>
   </div>
 
   <div class="divider"></div>
@@ -223,7 +212,7 @@
   <div class="insta-wrap">
     <p class="insta-label">MADE BY</p>
     <a class="insta-link" href="https://www.instagram.com/nuvy.photo" target="_blank">
-      <svg class="insta-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg class="insta-icon" viewBox="0 0 24 24" fill="none">
         <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="2"/>
         <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
         <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/>
@@ -237,20 +226,14 @@
 </div>
 
 <script>
-  const starPositions = [
-    [6,8],[15,72],[4,90],[82,6],[92,52],[78,80],[48,4],[62,92],[88,30],[20,40]
-  ];
-  const starsEl = document.getElementById('stars');
-  starPositions.forEach(([left, top], i) => {
-    const s = document.createElement('span');
-    s.className = 'star';
-    s.textContent = '✦';
-    s.style.left = left + '%';
-    s.style.top = top + '%';
-    s.style.animationDelay = (i * 0.3) + 's';
-    s.style.fontSize = (12 + (i % 3) * 6) + 'px';
-    starsEl.appendChild(s);
-  });
+  // 날짜 자동
+  (function() {
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = String(now.getMonth()+1).padStart(2,'0');
+    const d = String(now.getDate()).padStart(2,'0');
+    document.getElementById('today-date').textContent = `${y} · ${m} · ${d}`;
+  })();
 
   let imageURL = null;
 

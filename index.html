@@ -140,7 +140,7 @@
 
   #countdown-overlay {
     position: absolute;
-    top: 70px;
+    top: 80px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 8;
@@ -219,6 +219,13 @@
   }
   .btn-sub:active { background: #5ab0e0; color: #fff; }
 
+  /* QR 화면 처음으로 버튼 — 하늘색 배경 */
+  #screen-qr .btn-sub {
+    background: #5ab0e0;
+    color: #fff;
+  }
+  #screen-qr .btn-sub:active { background: #3a90c0; }
+
   /* ═══ SCREEN 5 — QR ═══ */
   #screen-qr {
     position: relative;
@@ -236,34 +243,16 @@
     z-index: 1;
   }
 
-  #qr-status {
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 15px;
-    color: #4a6070;
-    letter-spacing: 0.08em;
-  }
+  /* 문구 숨김 — QR 기능은 유지 */
+  #qr-status { display: none; }
+  .qr-hint   { display: none; }
+  .qr-brand  { display: none; }
 
   #qr-box {
     padding: 20px;
     background: white;
     border-radius: 12px;
     box-shadow: 0 4px 24px rgba(90,176,224,0.2);
-  }
-
-  .qr-hint {
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 16px;
-    color: #4a6070;
-    text-align: center;
-    line-height: 1.8;
-  }
-
-  .qr-brand {
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    color: #4a6070;
-    font-weight: 700;
   }
 
   #cap-canvas { display: none; }
@@ -320,8 +309,11 @@
 <div id="screen-qr" class="screen">
   <img class="bg-image" src="qr_bg.png" alt="">
   <div id="qr-content">
+    <p id="qr-status">업로드 중...</p>
     <div id="qr-box"></div>
-    <button class="btn-main" onclick="goHome()">처음으로</button>
+    <p class="qr-hint">스캔하면 사진을 저장할 수 있어요 📷</p>
+    <p class="qr-brand">made by. NUVY.PHOTO</p>
+    <button class="btn-sub" onclick="goHome()">처음으로</button>
   </div>
 </div>
 
