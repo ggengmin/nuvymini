@@ -10,474 +10,296 @@
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  :root {
-    --sky: #c8e8f8;
-    --sky-light: #e8f5fd;
-    --sky-deep: #a0d0ef;
-    --white: #ffffff;
-    --ink: #1a2a3a;
-    --ink-soft: #4a6070;
-    --blue-btn: #5ab0e0;
-    --blue-btn-hover: #3a90c0;
-    --star: #ffffff;
-  }
-
   html, body {
-    width: 100%;
-    height: 100%;
+    width: 100%; height: 100%;
     overflow: hidden;
-    background: var(--sky);
+    background: #f5ede0;
     font-family: 'Noto Sans KR', sans-serif;
   }
 
-  /* ── 공통: 화면 ── */
   .screen {
-    position: fixed;
-    inset: 0;
+    position: fixed; inset: 0;
     display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(160deg, var(--sky-light) 0%, var(--sky) 50%, var(--sky-deep) 100%);
   }
-  .screen.active { display: flex; }
+  .screen.active { display: block; }
 
-  /* 반짝이 별 공통 */
-  .stars {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-  }
-  .star {
-    position: absolute;
-    color: var(--star);
-    font-size: 18px;
-    opacity: 0.7;
-    animation: twinkle 2.5s ease-in-out infinite;
-  }
-  @keyframes twinkle {
-    0%, 100% { opacity: 0.3; transform: scale(0.8); }
-    50% { opacity: 1; transform: scale(1.2); }
-  }
-
-  /* ── 버튼 공통 ── */
-  .btn-main {
-    background: var(--blue-btn);
-    color: var(--white);
-    border: none;
-    border-radius: 50px;
-    padding: 14px 40px;
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 17px;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    cursor: pointer;
-    transition: all 0.15s;
-    box-shadow: 0 4px 16px rgba(90,176,224,0.35);
-  }
-  .btn-main:hover { background: var(--blue-btn-hover); transform: translateY(-1px); }
-  .btn-main:active { transform: translateY(1px); }
-
-  .btn-sub {
-    background: transparent;
-    color: var(--blue-btn);
-    border: 2.5px solid var(--blue-btn);
-    border-radius: 50px;
-    padding: 13px 36px;
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .btn-sub:hover { background: var(--blue-btn); color: white; }
-
-  /* ════════════════════════════════
-     SCREEN 1 — MAIN
-  ════════════════════════════════ */
-  #screen-main {
-    flex-direction: row;
-    gap: 0;
-    padding: 0 40px;
-  }
-
-  .main-left {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    padding-right: 32px;
-  }
-
-  .main-eyebrow {
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    color: var(--ink-soft);
-  }
-
-  .main-title {
-    font-family: 'Fredoka One', cursive;
-    font-size: clamp(52px, 8vw, 82px);
-    color: var(--white);
-    line-height: 1.05;
-    text-shadow: 0 4px 20px rgba(90,176,224,0.4);
-    letter-spacing: 0.02em;
-  }
-
-  .main-desc {
-    font-size: 15px;
-    color: var(--ink-soft);
-    line-height: 1.8;
-    font-weight: 400;
-  }
-
-  .main-right {
-    flex: 1.4;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  /* 라이브 카메라 프리뷰 (메인) */
-  .main-camera-wrap {
-    position: relative;
-    width: clamp(280px, 48vw, 500px);
-    aspect-ratio: 4/3;
-    border-radius: 16px;
-    overflow: hidden;
-    border: 3px solid rgba(255,255,255,0.7);
-    box-shadow: 0 8px 40px rgba(90,176,224,0.25);
-    background: #b0c8d8;
-  }
-
-  #main-video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transform: scaleX(-1);
-    display: block;
-  }
-
-  /* ════════════════════════════════
-     SCREEN 2 — HOW TO DO
-  ════════════════════════════════ */
-  #screen-how {
-    flex-direction: row;
-    gap: 0;
-    padding: 0 40px;
-  }
-
-  .how-left {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding-right: 40px;
-  }
-
-  .how-title {
-    font-family: 'Fredoka One', cursive;
-    font-size: clamp(38px, 6vw, 60px);
-    color: var(--white);
-    letter-spacing: 0.04em;
-    line-height: 1.1;
-    text-shadow: 0 3px 16px rgba(90,176,224,0.4);
-  }
-
-  .how-steps {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .how-step {
-    font-size: clamp(14px, 1.8vw, 17px);
-    font-weight: 700;
-    color: var(--ink);
-    letter-spacing: 0.04em;
-    line-height: 1.5;
-  }
-
-  .how-note {
-    font-size: 13px;
-    color: var(--ink-soft);
-    line-height: 1.8;
-    border-top: 1px solid rgba(255,255,255,0.5);
-    padding-top: 14px;
-  }
-
-  .how-right {
-    flex: 1.4;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-  }
-
-  /* 템플릿 예시 이미지 */
-  .template-preview {
-    width: clamp(200px, 32vw, 340px);
-    border-radius: 8px;
-    box-shadow: 0 8px 32px rgba(90,176,224,0.3);
-    display: block;
-  }
-
-  .template-label {
-    font-size: 11px;
-    color: var(--ink-soft);
-    letter-spacing: 0.1em;
-  }
-
-  /* ════════════════════════════════
-     SCREEN 3 — SHOOT
-  ════════════════════════════════ */
-  #screen-shoot {
-    padding: 0;
-    overflow: hidden;
-  }
-
-  /* 뷰파인더 — 화면 전체 */
-  #shoot-video {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transform: scaleX(-1);
-  }
-
-  /* 상단 HUD — 카운트 숫자만 */
-  .shoot-hud {
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-start;
-    padding: 20px 24px;
-    z-index: 10;
-    pointer-events: none;
-  }
-
-  .hud-count {
-    font-family: 'Fredoka One', cursive;
-    font-size: 32px;
-    color: var(--white);
-    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
-    background: rgba(0,0,0,0.18);
-    padding: 4px 14px;
-    border-radius: 20px;
-  }
-
-  /* 왼쪽 카메라 안내 */
-  .camera-guide {
-    position: absolute;
-    top: 50%;
-    left: 16px;
-    transform: translateY(-50%);
-    z-index: 10;
-    pointer-events: none;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-  }
-
-  .guide-arrow {
-    font-family: 'Fredoka One', cursive;
-    font-size: 20px;
-    color: #ffffff;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-    letter-spacing: 0.06em;
-    line-height: 1.5;
-  }
-
-  /* 카운트다운 오버레이 — 배경 없이 숫자만 우상단 표시 */
-  #countdown-overlay {
-    position: absolute;
-    top: 18px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: none;
-    z-index: 20;
-    pointer-events: none;
-  }
-  #countdown-overlay.show { display: block; }
-
-  #countdown-num {
-    font-family: 'Fredoka One', cursive;
-    font-size: 52px;
-    color: white;
-    text-shadow: 0 0 20px rgba(255,255,255,0.6), 0 2px 8px rgba(0,0,0,0.4);
-    animation: cd-pop 0.9s ease-out forwards;
-    display: block;
-    text-align: center;
-  }
-  @keyframes cd-pop {
-    0%   { transform: scale(1.4); opacity: 0; }
-    40%  { transform: scale(1.0); opacity: 1; }
-    90%  { transform: scale(0.95); opacity: 0.7; }
-    100% { opacity: 0.5; }
-  }
-
-  /* 플래시 */
+  /* ═══ 플래시 ═══ */
   #flash {
-    position: fixed;
-    inset: 0;
-    background: white;
-    opacity: 0;
-    pointer-events: none;
-    z-index: 999;
+    position: fixed; inset: 0;
+    background: white; opacity: 0;
+    pointer-events: none; z-index: 9999;
     transition: opacity 0.04s;
   }
   #flash.on { opacity: 1; }
 
-  /* ════════════════════════════════
-     SCREEN 4 — RESULT
-  ════════════════════════════════ */
-  #screen-result {
-    gap: 24px;
+  /* ═══ SCREEN 1 — MAIN ═══ */
+  #screen-main {
+    position: relative;
+    width: 100%; height: 100%;
   }
 
-  .result-title {
-    font-family: 'Fredoka One', cursive;
-    font-size: 28px;
-    color: var(--white);
-    letter-spacing: 0.1em;
-    text-shadow: 0 2px 16px rgba(90,176,224,0.5);
+  /* 배경 이미지 */
+  .bg-image {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: fill;
+    display: block;
+    z-index: 0;
   }
 
-  /* 합성 결과 이미지 */
-  #result-canvas-display {
-    /* 735:980 비율 유지하면서 화면에 맞게 */
-    max-height: 60vh;
-    aspect-ratio: 735/980;
-    border-radius: 8px;
-    box-shadow: 0 8px 40px rgba(90,176,224,0.3);
+  /* 라이브뷰 — main */
+  #main-video-wrap {
+    position: absolute;
+    left: 329px; top: 214px;
+    width: 522px; height: 462px;
+    z-index: 1;
+    overflow: hidden;
+    border-radius: 4px;
+  }
+  #main-video {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1);
     display: block;
   }
 
-  .result-btns {
-    display: flex;
-    gap: 14px;
+  /* 시작하기 버튼 */
+  #btn-start {
+    position: absolute;
+    left: 50%; bottom: 52px;
+    transform: translateX(-50%);
+    z-index: 2;
+    background: #5ab0e0;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 16px 56px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(90,176,224,0.4);
+    transition: all 0.15s;
+  }
+  #btn-start:active { transform: translateX(-50%) scale(0.97); }
+
+  /* ═══ SCREEN 3 — SHOOT ═══ */
+  #screen-shoot {
+    position: relative;
+    width: 100%; height: 100%;
   }
 
-  /* ════════════════════════════════
-     SCREEN 5 — QR
-  ════════════════════════════════ */
-  #screen-qr {
-    gap: 20px;
+  /* 라이브뷰 — shoot */
+  #shoot-video-wrap {
+    position: absolute;
+    left: 219px; top: 82px;
+    width: 741px; height: 656px;
+    z-index: 1;
+    overflow: hidden;
+    border-radius: 4px;
+  }
+  #shoot-video {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1);
+    display: block;
   }
 
-  .qr-title {
+  /* 1/2 카운터 */
+  #hud-count {
+    position: absolute;
+    top: 20px; right: 28px;
+    z-index: 5;
     font-family: 'Fredoka One', cursive;
-    font-size: 28px;
-    color: var(--white);
-    letter-spacing: 0.1em;
-    text-shadow: 0 2px 12px rgba(90,176,224,0.4);
+    font-size: 36px;
+    color: #fff;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.35);
+    background: rgba(0,0,0,0.18);
+    padding: 4px 16px;
+    border-radius: 20px;
   }
 
-  #qr-status {
-    font-size: 14px;
-    color: var(--ink-soft);
+  /* 알림 오버레이 (3초) */
+  #notify-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.42);
+  }
+  #notify-overlay.show { display: flex; }
+
+  .notify-box {
+    text-align: center;
+    color: #fff;
+  }
+  .notify-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 48px;
+    letter-spacing: 0.04em;
+    text-shadow: 0 2px 16px rgba(0,0,0,0.4);
+    margin-bottom: 12px;
+  }
+  .notify-sub {
+    font-size: 22px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.85);
     letter-spacing: 0.08em;
   }
 
+  /* 카운트다운 오버레이 */
+  #countdown-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 8;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+  #countdown-overlay.show { display: flex; }
+
+  #countdown-num {
+    font-family: 'Fredoka One', cursive;
+    font-size: 160px;
+    color: #fff;
+    text-shadow:
+      0 0 40px rgba(255,255,255,0.5),
+      0 4px 16px rgba(0,0,0,0.4);
+    animation: cd-pop 0.9s ease-out forwards;
+  }
+  @keyframes cd-pop {
+    0%   { transform: scale(1.5); opacity: 0; }
+    40%  { transform: scale(1.0); opacity: 1; }
+    90%  { transform: scale(0.9); opacity: 0.8; }
+    100% { opacity: 0.6; }
+  }
+
+  /* ═══ SCREEN 4 — RESULT ═══ */
+  #screen-result {
+    position: relative;
+    width: 100%; height: 100%;
+  }
+
+  /* 결과 사진 — 배경 위 중앙 */
+  #result-img-wrap {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -54%);
+    z-index: 1;
+  }
+
+  #result-display {
+    max-height: 62vh;
+    aspect-ratio: 735/980;
+    display: block;
+    border-radius: 6px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+  }
+
+  /* 버튼 3개 */
+  .result-btns {
+    position: absolute;
+    bottom: 40px; left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    gap: 16px;
+  }
+
+  .btn-main {
+    background: #5ab0e0; color: #fff;
+    border: none; border-radius: 50px;
+    padding: 14px 36px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 17px; font-weight: 700;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(90,176,224,0.35);
+    transition: all 0.15s;
+  }
+  .btn-main:active { transform: scale(0.97); }
+
+  .btn-sub {
+    background: transparent; color: #5ab0e0;
+    border: 2.5px solid #5ab0e0;
+    border-radius: 50px;
+    padding: 13px 32px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 17px; font-weight: 700;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .btn-sub:active { background: #5ab0e0; color: #fff; }
+
+  /* ═══ SCREEN 5 — QR ═══ */
+  #screen-qr {
+    position: relative;
+    width: 100%; height: 100%;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    background: linear-gradient(160deg, #e8f5fd 0%, #c8e8f8 60%, #a0d0ef 100%);
+  }
+  #screen-qr.active { display: flex; }
+
+  .qr-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 32px; color: #fff;
+    letter-spacing: 0.1em;
+    text-shadow: 0 2px 12px rgba(90,176,224,0.5);
+  }
+  #qr-status { font-size: 15px; color: #4a6070; letter-spacing: 0.08em; }
   #qr-box {
-    padding: 20px;
-    background: white;
+    padding: 20px; background: white;
     border-radius: 12px;
     box-shadow: 0 4px 24px rgba(90,176,224,0.2);
   }
+  .qr-hint { font-size: 16px; color: #4a6070; text-align: center; line-height: 1.8; }
+  .qr-brand { font-size: 11px; letter-spacing: 0.2em; color: #4a6070; font-weight: 700; }
 
-  .qr-hint {
-    font-size: 15px;
-    color: var(--ink-soft);
-    text-align: center;
-    line-height: 1.8;
-  }
-
-  .qr-brand {
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    color: var(--ink-soft);
-    font-weight: 700;
-  }
-
-  /* ════════════
-     STARS DECO
-  ════════════ */
-  /* 별들은 JS로 생성 */
+  #cap-canvas { display: none; }
+  #result-canvas { display: none; }
 </style>
 </head>
 <body>
 
 <div id="flash"></div>
+<canvas id="cap-canvas"></canvas>
+<canvas id="result-canvas"></canvas>
 
 <!-- ══ SCREEN 1: MAIN ══ -->
 <div id="screen-main" class="screen active">
-  <div class="stars" id="stars-main"></div>
-
-  <div class="main-left">
-    <p class="main-eyebrow">누비포토 × 썸머팝업</p>
-    <h1 class="main-title">PHOTO<br>BOOTH</h1>
-    <p class="main-desc">
-      위 부스는 출력 없는 다운로드 전용 포토부스입니다<br>
-      자유롭게 촬영하시고, 오늘을 추억하세요
-    </p>
-    <button class="btn-main" onclick="goTo('screen-how')">시작하기</button>
+  <img class="bg-image" src="main_bg.png" alt="">
+  <div id="main-video-wrap">
+    <video id="main-video" autoplay playsinline muted></video>
   </div>
-
-  <div class="main-right">
-    <div class="main-camera-wrap">
-      <video id="main-video" autoplay playsinline muted></video>
-    </div>
-  </div>
-</div>
-
-<!-- ══ SCREEN 2: HOW TO DO ══ -->
-<div id="screen-how" class="screen">
-  <div class="stars" id="stars-how"></div>
-
-  <div class="how-left">
-    <h2 class="how-title">HOW<br>TO DO</h2>
-    <div class="how-steps">
-      <p class="how-step">1. 시작하기 버튼을 누른다</p>
-      <p class="how-step">2. 5초에 한번 · 2번 촬영한다</p>
-      <p class="how-step">3. QR코드를 스캔해 사진을 저장한다</p>
-    </div>
-    <p class="how-note">
-      소품을 활용해 다양하게 찍고<br>
-      인스타그램, 카카오톡 배경 등에 활용해보세요 :)
-    </p>
-    <button class="btn-main" onclick="startShooting()">촬영하기</button>
-  </div>
-
-  <div class="how-right">
-    <!-- 실제 템플릿 예시 이미지 -->
-    <img class="template-preview" src="nuvymini_summer1.png" alt="템플릿 예시" onerror="this.style.opacity='0.3'">
-    <p class="template-label">누비포토 × 썸머팝업 템플릿</p>
-  </div>
+  <button id="btn-start" onclick="startShooting()">시작하기</button>
 </div>
 
 <!-- ══ SCREEN 3: SHOOT ══ -->
 <div id="screen-shoot" class="screen">
-  <video id="shoot-video" autoplay playsinline muted></video>
-
-  <!-- 우상단: 촬영 횟수 -->
-  <div class="shoot-hud">
-    <div class="hud-count" id="hud-count">1/2</div>
+  <img class="bg-image" src="shoot_bg.png" alt="">
+  <div id="shoot-video-wrap">
+    <video id="shoot-video" autoplay playsinline muted></video>
   </div>
 
-  <!-- 왼쪽: 카메라 위치 안내 -->
-  <div class="camera-guide" id="camera-guide">
-    <span class="guide-arrow">카메라 위치</span>
-    <span class="guide-arrow">←</span>
+  <!-- 1/2 카운터 -->
+  <div id="hud-count">1/2</div>
+
+  <!-- 3초 알림 오버레이 -->
+  <div id="notify-overlay">
+    <div class="notify-box">
+      <div class="notify-title">2번 촬영됩니다</div>
+      <div class="notify-sub">카메라 위치는 왼쪽에 있어요 📷</div>
+    </div>
   </div>
 
-  <!-- 상단 중앙: 카운트다운 숫자 -->
+  <!-- 카운트다운 -->
   <div id="countdown-overlay">
     <span id="countdown-num">5</span>
   </div>
@@ -485,35 +307,32 @@
 
 <!-- ══ SCREEN 4: RESULT ══ -->
 <div id="screen-result" class="screen">
-  <div class="stars" id="stars-result"></div>
-  <p class="result-title">사진을 다운로드 해보세요</p>
-  <canvas id="result-canvas" style="display:none;"></canvas>
-  <img id="result-canvas-display" src="" alt="결과 사진">
+  <img class="bg-image" src="download_bg.png" alt="">
+  <div id="result-img-wrap">
+    <img id="result-display" src="" alt="결과 사진">
+  </div>
   <div class="result-btns">
     <button class="btn-sub" onclick="goHome()">처음으로</button>
     <button class="btn-sub" onclick="retake()">재촬영</button>
-    <button class="btn-main" onclick="uploadAndQR()">다운로드</button>
+    <button class="btn-main" onclick="uploadAndQR()">다운로드 →</button>
   </div>
 </div>
 
 <!-- ══ SCREEN 5: QR ══ -->
 <div id="screen-qr" class="screen">
-  <div class="stars" id="stars-qr"></div>
   <p class="qr-title">QR코드를 스캔하세요</p>
   <p id="qr-status">업로드 중...</p>
   <div id="qr-box"></div>
   <p class="qr-hint">스캔하면 사진을 저장할 수 있어요 📷</p>
   <p class="qr-brand">made by. NUVY.PHOTO</p>
-  <button class="btn-sub" onclick="goTo('screen-main'); resetAll();">처음으로</button>
+  <button class="btn-sub" onclick="goHome()">처음으로</button>
 </div>
 
-<!-- ── hidden canvas for capture ── -->
-<canvas id="cap-canvas" style="display:none;"></canvas>
-
-<!-- Firebase SDK -->
+<!-- Firebase -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+  import { getStorage, ref, uploadBytes, getDownloadURL }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBRF4E9uaVYSa4ZnLasHv7-fmGejkKTPtM",
@@ -523,37 +342,13 @@
     messagingSenderId: "146917590198",
     appId: "1:146917590198:web:40c91453c3d454e9541217"
   };
-
   const app = initializeApp(firebaseConfig);
   const storage = getStorage(app);
   window._fb = { storage, ref, uploadBytes, getDownloadURL };
 </script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <script>
-// ══════════════════════════════════════
-//  STARS DECORATION
-// ══════════════════════════════════════
-function createStars(containerId, count = 8) {
-  const el = document.getElementById(containerId);
-  if (!el) return;
-  const positions = [
-    [8,12],[18,70],[5,88],[80,8],[90,55],[75,82],[50,6],[60,90]
-  ];
-  positions.slice(0, count).forEach(([left, top], i) => {
-    const s = document.createElement('span');
-    s.className = 'star';
-    s.textContent = '✦';
-    s.style.left = left + '%';
-    s.style.top = top + '%';
-    s.style.animationDelay = (i * 0.35) + 's';
-    s.style.fontSize = (14 + (i % 3) * 6) + 'px';
-    el.appendChild(s);
-  });
-}
-['stars-main','stars-how','stars-result','stars-qr'].forEach(id => createStars(id));
-
 // ══════════════════════════════════════
 //  SCREEN NAVIGATION
 // ══════════════════════════════════════
@@ -565,94 +360,76 @@ function goTo(id) {
 // ══════════════════════════════════════
 //  CAMERA
 // ══════════════════════════════════════
-let mainStream = null;
-let shootStream = null;
+let camStream = null;
 
-async function startMainCamera() {
+async function startCamera() {
   try {
-    mainStream = await navigator.mediaDevices.getUserMedia({
+    camStream = await navigator.mediaDevices.getUserMedia({
       video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } },
       audio: false
     });
-    document.getElementById('main-video').srcObject = mainStream;
+    document.getElementById('main-video').srcObject = camStream;
+    document.getElementById('shoot-video').srcObject = camStream;
   } catch(e) {
-    console.warn('카메라 없음:', e);
+    alert('카메라 접근 불가 (HTTPS 필요)');
   }
 }
 
-async function startShootCamera() {
-  // 촬영화면은 메인 스트림 재활용
-  const sv = document.getElementById('shoot-video');
-  if (mainStream) {
-    sv.srcObject = mainStream;
-  } else {
-    try {
-      shootStream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } },
-        audio: false
-      });
-      sv.srcObject = shootStream;
-    } catch(e) { alert('카메라 접근 불가 (HTTPS 필요)'); }
-  }
+// ══════════════════════════════════════
+//  TEMPLATE 설정
+// ══════════════════════════════════════
+const TEMPLATE = {
+  w: 735, h: 980,
+  photo1: { x: 238, y: 200, w: 260, h: 230 },
+  photo2: { x: 238, y: 522, w: 260, h: 230 },
+};
+
+let capturedFrames = [];
+let shootIndex = 0;
+let templateImg = null;
+
+function preloadTemplate() {
+  return new Promise(resolve => {
+    templateImg = new Image();
+    templateImg.onload = resolve;
+    templateImg.onerror = resolve;
+    templateImg.src = 'nuvymini_summer1.png';
+  });
 }
 
 // ══════════════════════════════════════
 //  SHOOTING FLOW
 // ══════════════════════════════════════
-
-// ────────────────────────────────────
-//  🖼 템플릿 합성 설정
-//  Figma에서 좌표 확인 후 아래 값 수정!
-// ────────────────────────────────────
-const TEMPLATE = {
-  w: 735,
-  h: 980,
-  // 사진 1 (위)
-  photo1: { x: 221, y: 267, w: 294, h: 223 },
-  // 사진 2 (아래)
-  photo2: { x: 221, y: 501, w: 294, h: 223 },
-};
-// ────────────────────────────────────
-
-let capturedFrames = [];  // [dataURL, dataURL]
-let shootIndex = 0;
-let templateImg = null;
-
-// 템플릿 이미지 미리 로드
-function preloadTemplate() {
-  return new Promise(resolve => {
-    templateImg = new Image();
-    templateImg.onload = resolve;
-    templateImg.onerror = resolve; // 없어도 진행
-    templateImg.src = 'nuvymini_summer1.png';
-  });
-}
-
 function startShooting() {
   capturedFrames = [];
   shootIndex = 0;
   goTo('screen-shoot');
-  startShootCamera();
   document.getElementById('hud-count').textContent = '1/2';
-  scheduleNextShot();
+
+  // 3초 알림 먼저 표시
+  const notify = document.getElementById('notify-overlay');
+  notify.classList.add('show');
+  setTimeout(() => {
+    notify.classList.remove('show');
+    scheduleNextShot();
+  }, 3000);
 }
 
 function scheduleNextShot() {
   let count = 5;
   const overlay = document.getElementById('countdown-overlay');
-  const numEl = document.getElementById('countdown-num');
-  const guide = document.getElementById('camera-guide');
-
-  // 안내 문구는 항상 표시 유지
+  const numEl   = document.getElementById('countdown-num');
 
   overlay.classList.add('show');
   numEl.textContent = count;
+  numEl.style.animation = 'none';
+  void numEl.offsetWidth;
+  numEl.style.animation = 'cd-pop 0.9s ease-out forwards';
 
   const iv = setInterval(() => {
     count--;
     if (count > 0) {
       numEl.textContent = count;
-      // 애니메이션 리트리거
       numEl.style.animation = 'none';
       void numEl.offsetWidth;
       numEl.style.animation = 'cd-pop 0.9s ease-out forwards';
@@ -673,24 +450,21 @@ function captureFrame() {
   const video = document.getElementById('shoot-video');
   const tmpCanvas = document.getElementById('cap-canvas');
 
-  // 4:3 크롭
   const vw = video.videoWidth, vh = video.videoHeight;
   let sx = 0, sy = 0, sw = vw, sh = vh;
-  const targetR = 4/3;
-  if (vw/vh > targetR) { sw = vh * targetR; sx = (vw-sw)/2; }
-  else { sh = vw/targetR; sy = (vh-sh)/2; }
-
-  // 사진 크기는 템플릿 내 슬롯 크기로
   const slot = shootIndex === 0 ? TEMPLATE.photo1 : TEMPLATE.photo2;
+  const targetR = slot.w / slot.h;
+  if (vw / vh > targetR) { sw = vh * targetR; sx = (vw - sw) / 2; }
+  else { sh = vw / targetR; sy = (vh - sh) / 2; }
+
   tmpCanvas.width  = slot.w;
   tmpCanvas.height = slot.h;
   const ctx = tmpCanvas.getContext('2d');
   ctx.translate(slot.w, 0);
-  ctx.scale(-1, 1); // 미러
+  ctx.scale(-1, 1);
   ctx.drawImage(video, sx, sy, sw, sh, 0, 0, slot.w, slot.h);
 
-  capturedFrames.push(tmpCanvas.toDataURL('image/jpeg', 0.92));
-
+  capturedFrames.push(tmpCanvas.toDataURL('image/jpeg', 0.95));
   shootIndex++;
 
   if (shootIndex < 2) {
@@ -709,44 +483,46 @@ async function compositeAndShow() {
   canvas.height = TEMPLATE.h;
   const ctx = canvas.getContext('2d');
 
-  // 배경 (흰색)
+  // 흰 배경
   ctx.fillStyle = '#ffffff';
   ctx.fillRect(0, 0, TEMPLATE.w, TEMPLATE.h);
 
-  // 찍힌 사진 2장 먼저 그리기
+  // 사진 먼저 (아래)
   const slots = [TEMPLATE.photo1, TEMPLATE.photo2];
   for (let i = 0; i < 2; i++) {
     const img = new Image();
-    await new Promise(res => {
-      img.onload = res;
-      img.src = capturedFrames[i];
-    });
+    await new Promise(res => { img.onload = res; img.src = capturedFrames[i]; });
     const s = slots[i];
     ctx.drawImage(img, s.x, s.y, s.w, s.h);
   }
 
-  // 템플릿 (PNG 투명) 위에 얹기
+  // 템플릿 프레임 위에 (위)
   if (templateImg && templateImg.complete && templateImg.naturalWidth > 0) {
     ctx.drawImage(templateImg, 0, 0, TEMPLATE.w, TEMPLATE.h);
   }
 
-  // 결과 이미지 표시
-  const dataURL = canvas.toDataURL('image/jpeg', 0.93);
-  document.getElementById('result-canvas-display').src = dataURL;
-
+  const dataURL = canvas.toDataURL('image/jpeg', 0.95);
+  document.getElementById('result-display').src = dataURL;
   goTo('screen-result');
 }
 
 // ══════════════════════════════════════
-//  RETAKE
+//  RETAKE / HOME
 // ══════════════════════════════════════
 function retake() {
   capturedFrames = [];
   shootIndex = 0;
   document.getElementById('hud-count').textContent = '1/2';
-  document.getElementById('camera-guide').classList.remove('hidden');
-  goTo('screen-shoot');
-  scheduleNextShot();
+  startShooting();
+}
+
+function goHome() {
+  capturedFrames = [];
+  shootIndex = 0;
+  document.getElementById('result-display').src = '';
+  document.getElementById('qr-box').innerHTML = '';
+  document.getElementById('qr-status').textContent = '업로드 중...';
+  goTo('screen-main');
 }
 
 // ══════════════════════════════════════
@@ -760,24 +536,21 @@ async function uploadAndQR() {
   try {
     const canvas = document.getElementById('result-canvas');
     const blob = await new Promise((res, rej) =>
-      canvas.toBlob(b => b ? res(b) : rej(new Error('toBlob 실패')), 'image/jpeg', 0.93)
+      canvas.toBlob(b => b ? res(b) : rej(new Error('toBlob 실패')), 'image/jpeg', 0.95)
     );
 
     const fb = window._fb;
     if (!fb) throw new Error('Firebase 초기화 안됨');
 
-    const storageRef = fb.ref(fb.storage, `popup/${Date.now()}.jpg`);
-    await fb.uploadBytes(storageRef, blob, { contentType: 'image/jpeg' });
-    const url = await fb.getDownloadURL(storageRef);
-
-    // Firebase getDownloadURL은 이미 완성된 URL이라 그대로 파라미터로 전달
+    const sRef = fb.ref(fb.storage, `popup/${Date.now()}.jpg`);
+    await fb.uploadBytes(sRef, blob, { contentType: 'image/jpeg' });
+    const url = await fb.getDownloadURL(sRef);
     const qrURL = `https://nuvymini.vercel.app/download.html?img=${btoa(url)}`;
 
     document.getElementById('qr-status').textContent = 'QR을 스캔하세요!';
     new QRCode(document.getElementById('qr-box'), {
       text: qrURL,
-      width: 220,
-      height: 220,
+      width: 220, height: 220,
       colorDark: '#1a2a3a',
       colorLight: '#ffffff',
       correctLevel: QRCode.CorrectLevel.M
@@ -788,32 +561,12 @@ async function uploadAndQR() {
   }
 }
 
-// ══════════════════════════════════════
-//  RESET
-// ══════════════════════════════════════
-function resetAll() {
-  capturedFrames = [];
-  shootIndex = 0;
-  document.getElementById('result-canvas-display').src = '';
-  document.getElementById('qr-box').innerHTML = '';
-  document.getElementById('qr-status').textContent = '업로드 중...';
-}
-
-function goHome() {
-  resetAll();
-  goTo('screen-main');
-}
-
-// ── 전역 노출 ──
-window.goTo = goTo;
-window.goHome = goHome;
 window.startShooting = startShooting;
-window.retake = retake;
-window.uploadAndQR = uploadAndQR;
-window.resetAll = resetAll;
+window.retake        = retake;
+window.goHome        = goHome;
+window.uploadAndQR   = uploadAndQR;
 
-// ── 시작 ──
-window.addEventListener('load', startMainCamera);
+window.addEventListener('load', startCamera);
 </script>
 </body>
 </html>
